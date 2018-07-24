@@ -4,18 +4,6 @@ import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 
-function query(){
-  let param = {state:"CA"};
-  axios.post("http://localhost:8080/test/findCity",JSON.stringify(param),
-       {
-         method:"POST",
-         mode:"cors",
-         headers: {"Content-Type": "application/json"},
-      }
-    ).then((res)=>{
-      console.log(res.data);
-  })
-}
 class App extends Component {
   render() {
     return (
@@ -25,10 +13,31 @@ class App extends Component {
 }
 
 class Square extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cityName: "Mix"
+    };
+  }
+  query(){
+    let param = {state:"CA"};
+    axios.post("http://localhost:8080/test/findCity",JSON.stringify(param),
+         {
+           method:"POST",
+           mode:"cors",
+           headers: {"Content-Type": "application/json"},
+        }
+      ).then((res)=>{
+        console.error(JSON.stringify(res.data));
+        this.setState({
+          cityName: JSON.stringify(res.data)
+        });
+    })
+  }
   render() {
     return (
-      <button className="square" onClick={()=>query()}>
-        {}
+      <button className="square" onClick={()=>this.query()}>
+        {this.state.cityName}
       </button>
     );
   }
@@ -40,25 +49,13 @@ class Board extends React.Component {
   }
 
   render() {
-    const status = 'Next player: X';
+    const status = 'Click to Change';
 
     return (
       <div>
         <div className="status" id="status">{status}</div>
         <div className="board-row">
           {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
         </div>
       </div>
     );
