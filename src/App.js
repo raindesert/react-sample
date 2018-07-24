@@ -21,7 +21,7 @@ class Square extends React.Component {
   }
   query(){
     let param = {state:"CA"};
-    axios.post("http://localhost:8080/test/findCity",JSON.stringify(param),
+    axios.post("test/findCity",JSON.stringify(param),
          {
            method:"POST",
            mode:"cors",
